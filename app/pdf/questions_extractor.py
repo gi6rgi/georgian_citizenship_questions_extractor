@@ -24,7 +24,9 @@ class Extractor(ABC):
             if f"{self.question_counter}." in line:
                 self.question_counter += 1
                 questions_and_answers = self.find_answers(line_number)
-                questions.append(Question(text=line, **questions_and_answers))
+                if ")" not in self.all_pdf_lines[line_number] and "ტესტები" not in self.all_pdf_lines[line_number]:
+                    line += f" {self.all_pdf_lines[line_number]}"
+                questions.append(Question(id=self.question_counter, text=line, **questions_and_answers))
         return questions
 
     def extract(self):
